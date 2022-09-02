@@ -1,40 +1,35 @@
 ﻿@page "/"
 
+<Image Source="@($"data:image/png;base64, {screenshotB64}")" />
 
-<Fields>
-    <Field>
-        <FieldLabel>Phone number</FieldLabel>
-        <TextEdit>
-            <FieldHelp>Include country and area prefixes</FieldHelp>
-        </TextEdit>
-    </Field>
-    <Field>
-        <FieldLabel>Password</FieldLabel>
-        <TextEdit>
-            <FieldHelp>Password strength: <Text TextColor="TextColor.Danger">weak</Text></FieldHelp>
-        </TextEdit>
-    </Field>
-</Fields>
-
-
-<Field>
-    <FieldLabel>Target Process</FieldLabel>
-    <Select TValue="Process" @bind-SelectedValue="@_selectedProcess">
-        @foreach (var process in _processes)
-        {
-            <SelectItem Value="process">@process.ProcessName</SelectItem>
-        }
-    </Select></Field>
-@code 
+@code
 {
-    List<Process> _processes = new();
-
-    protected override Task OnParametersSetAsync()
+    protected override async Task OnParametersSetAsync()
     {
-        _processes = Process.GetProcesses().ToList();
-
-        return Task.CompletedTask;
+        await TakeScreenshotAsync();
     }
 
-    private Process? _selectedProcess;
+    string screenshotB64 = "";
+
+    public async Task<ImageSource> TakeScreenshotAsync()
+    {
+        if (Screenshot.Default.IsCaptureSupported)
+        {
+            IScreenshotResult screen = await Screenshot.Default.CaptureAsync();
+
+            Stream stream = await screen.OpenReadAsync();
+            byte[] bytes;
+            using (var memoryStream = new MemoryStream())
+            {
+                stream.CopyTo(memoryStream);
+                bytes = memoryStream.ToArray();
+            }
+
+            screenshotB64 = Convert.ToBase64String(bytes);
+
+            return ImageSource.FromStream(() => stream);
+        }
+
+        return null;
+    }
 }

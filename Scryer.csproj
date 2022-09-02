@@ -30,7 +30,7 @@
         <TargetPlatformMinVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'windows'">10.0.17763.0</TargetPlatformMinVersion>
         <SupportedOSPlatformVersion Condition="$([MSBuild]::GetTargetPlatformIdentifier('$(TargetFramework)')) == 'tizen'">6.5</SupportedOSPlatformVersion>
         <IncrementVersionOnBuild>1.yyyy.Mdd.Hmm</IncrementVersionOnBuild>
-        <Version>1.2022.901.1937</Version>
+        <Version>1.2022.901.2054</Version>
         <Nullable>enable</Nullable>
     </PropertyGroup>
 
@@ -56,6 +56,7 @@
       <PackageReference Include="Blazorise" Version="1.0.6" />
       <PackageReference Include="Blazorise.Bootstrap" Version="1.0.6" />
       <PackageReference Include="Blazorise.Icons.FontAwesome" Version="1.0.6" />
+      <PackageReference Include="Newtonsoft.Json" Version="13.0.1" />
     </ItemGroup>
 
 </Project>
