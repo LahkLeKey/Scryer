@@ -1,7 +1,40 @@
 ﻿@page "/"
 
-<h1>Hello, world!</h1>
 
-Welcome to your new app.
+<Fields>
+    <Field>
+        <FieldLabel>Phone number</FieldLabel>
+        <TextEdit>
+            <FieldHelp>Include country and area prefixes</FieldHelp>
+        </TextEdit>
+    </Field>
+    <Field>
+        <FieldLabel>Password</FieldLabel>
+        <TextEdit>
+            <FieldHelp>Password strength: <Text TextColor="TextColor.Danger">weak</Text></FieldHelp>
+        </TextEdit>
+    </Field>
+</Fields>
 
-<SurveyPrompt Title="How is Blazor working for you?" />
+
+<Field>
+    <FieldLabel>Target Process</FieldLabel>
+    <Select TValue="Process" @bind-SelectedValue="@_selectedProcess">
+        @foreach (var process in _processes)
+        {
+            <SelectItem Value="process">@process.ProcessName</SelectItem>
+        }
+    </Select></Field>
+@code 
+{
+    List<Process> _processes = new();
+
+    protected override Task OnParametersSetAsync()
+    {
+        _processes = Process.GetProcesses().ToList();
+
+        return Task.CompletedTask;
+    }
+
+    private Process? _selectedProcess;
+}

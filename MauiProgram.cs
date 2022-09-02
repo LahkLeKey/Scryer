@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Components.WebView.Maui;
+﻿using Blazorise;
+using Blazorise.Bootstrap;
+using Blazorise.Icons.FontAwesome;
+using Microsoft.AspNetCore.Components.WebView.Maui;
 using Scryer.Data;
 
 namespace Scryer;
@@ -21,7 +24,13 @@ public static class MauiProgram
 #endif
 		
 		builder.Services.AddSingleton<WeatherForecastService>();
-
-		return builder.Build();
+        builder.Services
+            .AddBlazorise(options =>
+            {
+                options.Immediate = true;
+            })
+            .AddBootstrapProviders()
+            .AddFontAwesomeIcons(); 
+        return builder.Build();
 	}
 }
